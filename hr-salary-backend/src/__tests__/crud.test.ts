@@ -83,4 +83,39 @@ describe('Employee CRUD API', () => {
       expect(response.body).toHaveProperty('error');
     });
   });
+
+  describe('GET /api/employees', () => {
+    it('should return paginated employees with default page=1 and limit=10', async () => {
+      const response = await request(app)
+        .get('/api/employees')
+        .expect(200);
+
+      expect(response.body).toHaveProperty('data');
+      expect(response.body).toHaveProperty('meta');
+      expect(Array.isArray(response.body.data)).toBe(true);
+      expect(response.body.meta).toHaveProperty('page', 1);
+      expect(response.body.meta).toHaveProperty('limit', 10);
+      expect(response.body.meta).toHaveProperty('totalCount');
+      expect(response.body.meta).toHaveProperty('totalPages');
+    });
+
+    it('should respect custom page and limit parameters', async () => {
+      const response = await request(app)
+        .get('/api/employees?page=2&limit=5')
+        .expect(200);
+
+      expect(response.body.meta.page).toBe(2);
+      expect(response.body.meta.limit).toBe(5);
+      expect(response.body.data.length).toBeLessThanOrEqual(5);
+    });
+
+    it('should return correct totalPages calculation', async () => {
+      const response = await request(app)
+        .get('/api/employees?limit=100')
+        .expect(200);
+
+      const expectedTotalPages = Math.ceil(response.body.meta.totalCount / 100);
+      expect(response.body.meta.totalPages).toBe(expectedTotalPages);
+    });
+  });
 });
