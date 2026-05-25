@@ -1,10 +1,14 @@
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient } from '@prisma/client';
+import { PrismaLibSql } from '@prisma/adapter-libsql';
 
 describe('Database Operations', () => {
   let prisma: PrismaClient;
 
-  beforeAll(() => {
-    prisma = new PrismaClient();
+  beforeAll(async () => {
+    const adapter = new PrismaLibSql({
+      url: 'file:./prisma/dev.db',
+    });
+    prisma = new PrismaClient({ adapter });
   });
 
   afterAll(async () => {
