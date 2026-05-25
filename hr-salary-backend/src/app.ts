@@ -1,6 +1,7 @@
 import express, { type Application, type Request, type Response } from 'express';
 import cors from 'cors';
 import employeeRoutes from './routes/employeeRoutes.js';
+import insightsRoutes from './routes/insightsRoutes.js';
 
 const app: Application = express();
 
@@ -13,5 +14,6 @@ app.get('/health', (req: Request, res: Response) => {
 
 // API routes
 app.use('/api/employees', employeeRoutes);
+app.use('/api/insights', insightsRoutes);
 
 export default app;

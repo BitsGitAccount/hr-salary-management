@@ -136,7 +136,7 @@ npx prisma db seed
 npm run dev
 ```
 
-The backend runs on `http://localhost:3001` by default.
+The backend runs on `http://localhost:5000` by default.
 
 ### Running Tests
 
@@ -231,7 +231,7 @@ The frontend runs on `http://localhost:3000` by default.
 Create a `.env.local` file (optional):
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_API_URL=http://localhost:5000
 ```
 
 ### Running Tests
@@ -278,7 +278,7 @@ npm start
 
 3. **Access the Application**
    - Frontend: http://localhost:3000
-   - Backend API: http://localhost:3001
+   - Backend API: http://localhost:5000
 
 ### Running All Tests
 
@@ -317,7 +317,7 @@ This project was built using strict TDD practices:
 
 ### Create Employee
 ```bash
-curl -X POST http://localhost:3001/api/employees \
+curl -X POST http://localhost:5000/api/employees \
   -H "Content-Type: application/json" \
   -d '{
     "firstName": "John",
@@ -330,12 +330,12 @@ curl -X POST http://localhost:3001/api/employees \
 
 ### Get Paginated Employees
 ```bash
-curl "http://localhost:3001/api/employees?page=1&limit=10"
+curl "http://localhost:5000/api/employees?page=1&limit=10"
 ```
 
 ### Update Employee
 ```bash
-curl -X PUT http://localhost:3001/api/employees/{id} \
+curl -X PUT http://localhost:5000/api/employees/{id} \
   -H "Content-Type: application/json" \
   -d '{
     "salary": 105000
@@ -344,7 +344,7 @@ curl -X PUT http://localhost:3001/api/employees/{id} \
 
 ### Delete Employee
 ```bash
-curl -X DELETE http://localhost:3001/api/employees/{id}
+curl -X DELETE http://localhost:5000/api/employees/{id}
 ```
 
 ---
