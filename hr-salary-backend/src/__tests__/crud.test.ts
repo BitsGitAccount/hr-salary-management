@@ -118,4 +118,87 @@ describe('Employee CRUD API', () => {
       expect(response.body.meta.totalPages).toBe(expectedTotalPages);
     });
   });
+
+  describe('PUT /api/employees/:id', () => {
+    let testEmployeeId: string;
+
+    beforeAll(async () => {
+      // Create an employee for update tests
+      const response = await request(app)
+        .post('/api/employees')
+        .send({
+          firstName: 'Update',
+          lastName: 'Test',
+          jobTitle: 'Junior Developer',
+          country: 'Canada',
+          salary: 60000,
+        });
+      testEmployeeId = response.body.id;
+      createdEmployeeIds.push(testEmployeeId);
+    });
+
+    it('should update employee salary and return 200', async () => {
+      const response = await request(app)
+        .put(`/api/employees/${testEmployeeId}`)
+        .send({ salary: 75000 })
+        .expect(200);
+
+      expect(response.body.salary).toBe(75000);
+      expect(response.body.firstName).toBe('Update'); // Unchanged field
+    });
+
+    it('should update employee jobTitle and return 200', async () => {
+      const response = await request(app)
+        .put(`/api/employees/${testEmployeeId}`)
+        .send({ jobTitle: 'Senior Developer' })
+        .expect(200);
+
+      expect(response.body.jobTitle).toBe('Senior Developer');
+    });
+
+    it('should return 404 if employee ID does not exist', async () => {
+      const fakeId = '00000000-0000-0000-0000-000000000000';
+      const response = await request(app)
+        .put(`/api/employees/${fakeId}`)
+        .send({ salary: 80000 })
+        .expect(404);
+
+      expect(response.body).toHaveProperty('error');
+    });
+  });
+
+  describe('DELETE /api/employees/:id', () => {
+    it('should delete an employee and return 204', async () => {
+      // Create an employee to delete
+      const createResponse = await request(app)
+        .post('/api/employees')
+        .send({
+          firstName: 'Delete',
+          lastName: 'Me',
+          jobTitle: 'Temp Worker',
+          country: 'UK',
+          salary: 45000,
+        });
+
+      const employeeId = createResponse.body.id;
+
+      await request(app)
+        .delete(`/api/employees/${employeeId}`)
+        .expect(204);
+
+      // Verify employee is deleted
+      await request(app)
+        .get(`/api/employees/${employeeId}`)
+        .expect(404);
+    });
+
+    it('should return 404 if employee ID does not exist', async () => {
+      const fakeId = '00000000-0000-0000-0000-000000000000';
+      const response = await request(app)
+        .delete(`/api/employees/${fakeId}`)
+        .expect(404);
+
+      expect(response.body).toHaveProperty('error');
+    });
+  });
 });
