@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Profile visibility status for access control during manager reviews
+/// Values: VISIBLE_TO_ALL, MANAGER_ONLY, PRIVATE
+/// Note: SQLite doesn't support native ENUMs, so this is stored as String
+/// with application-level validation
+
+model Employee {
+  id                      String   @id @default(uuid())
+  firstName               String
+  lastName                String
+  jobTitle                String
+  country                 String
+  salary                  Int
+  managerId               String?
+  profileVisibilityStatus String   @default("VISIBLE_TO_ALL")
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  // Self-referencing relationship for organizational hierarchy
+  manager      Employee?  @relation("ManagerSubordinates", fields: [managerId], references: [id])
+  subordinates Employee[] @relation("ManagerSubordinates")
+}
