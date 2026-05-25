@@ -1,6 +1,6 @@
-import express, { Application, Request, Response } from 'express';
+import express, { type Application, type Request, type Response } from 'express';
 import cors from 'cors';
-import employeeRoutes from './routes/employeeRoutes';
+import employeeRoutes from './routes/employeeRoutes.js';
 
 const app: Application = express();
 

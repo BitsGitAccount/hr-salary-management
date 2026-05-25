@@ -133,7 +133,7 @@ npx prisma migrate dev
 npx prisma db seed
 
 # Start the server
-npx ts-node src/server.ts
+npm run dev
 ```
 
 The backend runs on `http://localhost:3001` by default.
@@ -266,7 +266,7 @@ npm start
    npm install
    npx prisma generate
    npx prisma db seed  # Seeds 10,000 employees
-   npx ts-node src/server.ts
+   npm run dev
    ```
 
 2. **Start the Frontend** (in a new terminal)
